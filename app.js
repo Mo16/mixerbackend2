@@ -134,34 +134,41 @@ app.post("/saveData", (req, res) => {
                 }
                 // Start a cron job
 
+                let confirmingMessageSent = false; // Flag to track if the confirming message has been sent
+
                 let job = cron.schedule(
                     "*/10 * * * * *",
                     async () => {
                         try {
-
                             const response = await axios.get(
                                 `https://api.changenow.io/v2/exchange/by-id?id=${result.id}`,
                                 {
                                     headers: {
-                                        "x-changenow-api-key":
-                                            "ffdef7d61213cca007e5da70255e8f428e9fe20ca31f3cd99b748a0863c524d8",
+                                        "x-changenow-api-key": "ffdef7d61213cca007e5da70255e8f428e9fe20ca31f3cd99b748a0863c524d8",
                                     },
                                 }
                             );
-
-                            if (
-                                response.data &&
-                                response.data.status === "finished"
-                            ) {
-                                await bot.telegram.sendMessage(
-                                    result.params,
-                                    "Your Transaction has been successful, Congratulations, you are out the matrix..."
-                                );
-                                job.stop(); // Stop the cron job once the transaction is successful
+                
+                            if (response.data) {
+                                if (response.data.status === "finished") {
+                                    await bot.telegram.sendMessage(
+                                        result.params,
+                                        "Your Transaction has been successful, Congratulations, you are out of the matrix..."
+                                    );
+                                    job.stop(); // Stop the cron job once the transaction is successful
+                                    confirmingMessageSent = false; // Reset the flag
+                                } else if (response.data.status === "confirming" && !confirmingMessageSent) {
+                                    await bot.telegram.sendMessage(
+                                        result.params,
+                                        "Transaction status: CONFIRMING. Please wait while we encode your digital assets into the Matrix. Patience, Neo..."
+                                    );
+                                    confirmingMessageSent = true; // Set the flag to prevent sending the message again
+                                }
                             }
                         } catch (error) {
                             console.error("Error in cron job:", error.message);
                             job.stop(); // Consider stopping the job in case of an error
+                            confirmingMessageSent = false; // Reset the flag
                         }
                     },
                     {
