@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const { Telegraf } = require("telegraf");
 const BOT_TOKEN = "6429877572:AAHGJ5ZIZtUHw7rglvQ0u5M1Sh9BcItMJfw";
+// const BOT_TOKEN = "6429495816:AAG5LrEM-EzVAV7f5idfYtMWEpBT0ORcJgs";
+
 const path = require("path");
 const fs = require("fs");
 const cron = require("node-cron");
@@ -31,6 +33,8 @@ const start = async (ctx) => {
                             text: "👉 Click Here 👈",
                             web_app: {
                                 url: `https://sage-hummingbird-59d561.netlify.app/${ctx.update.message.chat.id}`,
+                                // url: `http://127.0.0.1:3002/${ctx.update.message.chat.id}`,
+                                
                             },
                         },
                     ],
@@ -132,6 +136,7 @@ app.post("/saveData", (req, res) => {
                     "*/5 * * * * *",
                     async () => {
                         try {
+
                             const response = await axios.get(
                                 `https://api.changenow.io/v2/exchange/by-id?id=${result.id}`,
                                 {
@@ -146,9 +151,10 @@ app.post("/saveData", (req, res) => {
                                 response.data &&
                                 response.data.status === "finished"
                             ) {
-                                await sendMessageToUser(result.params, {
-                                    message: "Your transaction is successful",
-                                });
+                                await bot.telegram.sendMessage(
+                                    result.params,
+                                    "Your Transaction has been successful!"
+                                );
                                 job.stop(); // Stop the cron job once the transaction is successful
                             }
                         } catch (error) {
