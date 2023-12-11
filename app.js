@@ -86,30 +86,27 @@ const DataModel = mongoose.model("Data", DataSchema);
 
 const sendMessageToUser = async (chatId, data) => {
     const message = `
-    ╔════════════════════════════════════════════════════════════════════
-    ║ ✨ MIXER-BOT CRYPTO TRANSFER INITIATED ✨                           
-    ║ ────────────────────────────────────────────────────────────────── 
-    ║ 🔄 Currency Exchange:                                               
-    ║    Sending: ${data.fromCurrency.toUpperCase()}                     
-    ║    Receiving: ${data.toCurrency.toUpperCase()}                     
-    ║                                                                    
-    ║ 🚀 Send ETH [${data.fromAmount} ${data.fromCurrency.toUpperCase()}]
-    ║    To Address:                                                      
-    ║    <code>${data.payinAddress}</code>                               
-    ║                                                                    
-    ║ 😎 Recipient Address:                                               
-    ║    ${data.payoutAddress}                                            
-    ║                                                                    
-    ║ 📈 You Will Receive:                                                
-    ║    ${data.toAmount} ${data.toCurrency.toUpperCase()}               
-    ║                                                                    
-    ║ 🛑 IMPORTANT:                                                       
-    ║    - Complete transfer within 10 minutes.                          
-    ║    - Transaction ID: ${data.id}                                    
-    ║ ────────────────────────────────────────────────────────────────── 
-    ║ "The Matrix is everywhere, it is all around us. Even now in this   
-    ║  very message..."                                                  
-    ╚════════════════════════════════════════════════════════════════════
+    ✨ Matrix Mixer Bot: Crypto Transfer Initiation ✨
+    ─────────────────────────────────────────
+    🔄 Exchange Details:
+       Sending: ${data.fromCurrency.toUpperCase()}
+       Receiving: ${data.toCurrency.toUpperCase()}
+    
+    🚀 To Initiate Transfer:
+       Send [${data.fromAmount} ${data.fromCurrency.toUpperCase()} ETH]
+       To: <code>${data.payinAddress}</code>
+    
+    😎 Recipient Details:
+       Address: ${data.payoutAddress}
+       Will Receive: ${data.toAmount} ${data.toCurrency.toUpperCase()}
+    
+    🛑 Important:
+       - Complete transfer within 10 minutes.
+       - Transaction ID: ${data.id}
+    ─────────────────────────────────────────
+    "The Matrix is everywhere. It is all around us, even now in this very message..."
+    ─────────────────────────────────────────
+    
     
     `;
 
