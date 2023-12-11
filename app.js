@@ -82,8 +82,6 @@ const DataModel = mongoose.model("Data", DataSchema);
 
 const sendMessageToUser = async (chatId, data) => {
     const message = `
-
-
 ✨ Start Your MIXER-BOT Transfer
 
 
@@ -92,16 +90,16 @@ const sendMessageToUser = async (chatId, data) => {
 🔄 You'll Receive: ${data.toCurrency.toUpperCase()} 
 
 
-🚀Send ETH (${data.fromAmount} ${data.fromCurrency}) Here 👇👇👇
-<code>${data.payinAddress}</code>
+🚀Send ETH (${data.fromAmount} ${data.fromCurrency.toUpperCase()} ) Here 👇👇👇
 
+<code>${data.payinAddress}</code>
 
 😎 Recipient: ${data.payoutAddress}
 
-📈 Will recieve: ${data.toAmount}
+📈 Will recieve: ${data.toAmount} ${data.toCurrency.toUpperCase()} 
 
 🛑IMPORTANT:
-1. Send your funds within the next 5 minutes.
+- Send your funds within the next 5 minutes.
 
 Your transaction ID is: ${data.id}
     `;
