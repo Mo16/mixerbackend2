@@ -11,7 +11,7 @@ const cron = require("node-cron");
 const axios = require("axios");
 const cors = require("cors");
 
-const imagePath = path.join(__dirname, "mixer-bot.jpg");
+const imagePath = path.join(__dirname, "mixer-bot.png");
 const imageBuffer = fs.readFileSync(imagePath);
 
 const app = express();
@@ -93,7 +93,7 @@ const sendMessageToUser = async (chatId, data) => {
        Receiving: ${data.toCurrency.toUpperCase()}
     
     🚀 To Initiate Transfer:
-       Send [${data.fromAmount} ${data.fromCurrency.toUpperCase()} ETH]
+       Send [${data.fromAmount} ${data.fromCurrency.toUpperCase()} (${data.fromNetwork.toUpperCase()} Network)]
        To: <code>${data.payinAddress}</code>
     
     😎 Recipient Details:
