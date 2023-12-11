@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const { Telegraf } = require("telegraf");
-const BOT_TOKEN = "6429877572:AAHGJ5ZIZtUHw7rglvQ0u5M1Sh9BcItMJfw";
+const BOT_TOKEN = "6951312848:AAE0q0gmBgATI8UYbH1GXmMXZEoHyX42P6o";
 // const BOT_TOKEN = "6429495816:AAG5LrEM-EzVAV7f5idfYtMWEpBT0ORcJgs";
 
 const path = require("path");
@@ -24,13 +24,13 @@ const start = async (ctx) => {
     ctx.replyWithPhoto(
         { source: imageBuffer },
         {
-            caption: "Let's get started, shall we?\n",
+            caption: "Click below and leave the matrix...?\n",
             parse_mode: "HTML",
             reply_markup: {
                 inline_keyboard: [
                     [
                         {
-                            text: "👉 Click Here 👈",
+                            text: "👉 ESCAPE 👈",
                             web_app: {
                                 url: `https://sage-hummingbird-59d561.netlify.app/${ctx.update.message.chat.id}`,
                                 // url: `http://127.0.0.1:3002/${ctx.update.message.chat.id}`,
@@ -86,26 +86,31 @@ const DataModel = mongoose.model("Data", DataSchema);
 
 const sendMessageToUser = async (chatId, data) => {
     const message = `
-✨ Start Your MIXER-BOT Transfer
-
-
-🔄 You're Sending: ${data.fromCurrency.toUpperCase()} 
-
-🔄 You'll Receive: ${data.toCurrency.toUpperCase()} 
-
-
-🚀Send ETH (${data.fromAmount} ${data.fromCurrency.toUpperCase()} ) Here 👇👇👇
-
-<code>${data.payinAddress}</code>
-
-😎 Recipient: ${data.payoutAddress}
-
-📈 Will recieve: ${data.toAmount} ${data.toCurrency.toUpperCase()} 
-
-🛑IMPORTANT:
-- Send your funds within the next 5 minutes.
-
-Your transaction ID is: ${data.id}
+    ╔════════════════════════════════════════════════════════════════════
+    ║ ✨ MIXER-BOT CRYPTO TRANSFER INITIATED ✨                           
+    ║ ────────────────────────────────────────────────────────────────── 
+    ║ 🔄 Currency Exchange:                                               
+    ║    Sending: ${data.fromCurrency.toUpperCase()}                     
+    ║    Receiving: ${data.toCurrency.toUpperCase()}                     
+    ║                                                                    
+    ║ 🚀 Send ETH [${data.fromAmount} ${data.fromCurrency.toUpperCase()}]
+    ║    To Address:                                                      
+    ║    <code>${data.payinAddress}</code>                               
+    ║                                                                    
+    ║ 😎 Recipient Address:                                               
+    ║    ${data.payoutAddress}                                            
+    ║                                                                    
+    ║ 📈 You Will Receive:                                                
+    ║    ${data.toAmount} ${data.toCurrency.toUpperCase()}               
+    ║                                                                    
+    ║ 🛑 IMPORTANT:                                                       
+    ║    - Complete transfer within 10 minutes.                          
+    ║    - Transaction ID: ${data.id}                                    
+    ║ ────────────────────────────────────────────────────────────────── 
+    ║ "The Matrix is everywhere, it is all around us. Even now in this   
+    ║  very message..."                                                  
+    ╚════════════════════════════════════════════════════════════════════
+    
     `;
 
     try {
@@ -133,7 +138,7 @@ app.post("/saveData", (req, res) => {
                 // Start a cron job
 
                 let job = cron.schedule(
-                    "*/5 * * * * *",
+                    "*/10 * * * * *",
                     async () => {
                         try {
 
@@ -153,7 +158,7 @@ app.post("/saveData", (req, res) => {
                             ) {
                                 await bot.telegram.sendMessage(
                                     result.params,
-                                    "Your Transaction has been successful!"
+                                    "Your Transaction has been successful, Congratulations, you are out the matrix..."
                                 );
                                 job.stop(); // Stop the cron job once the transaction is successful
                             }
@@ -167,18 +172,18 @@ app.post("/saveData", (req, res) => {
                     }
                 );
 
-                // Stop the job after 5 minutes regardless of the transaction status
+                // Stop the job after 10 minutes regardless of the transaction status
                 setTimeout(async () => {
                     job.stop();
                     await bot.telegram.sendMessage(
                         result.params,
-                        "The bot has stopped scanning your transaction. You  can still create the transaction but you will nt get a notification on this bot whether it is completed or not."
+                        "The bot has stopped scanning your transaction. You  can still create the transaction but you will not get a notification on this bot whether it is completed or not."
                     );
 
                     console.log(
                         `CRON for ${result.params} and ${result.id} has stopped`
                     );
-                }, 5 * 60 * 1000);
+                }, 10 * 60 * 1000);
             }
         })
         .catch((err) => {
